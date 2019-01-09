@@ -1,5 +1,8 @@
 #!/bin/bash
 
+readonly POP3_USER=$1
+readonly POP3_PW=$2
+
 echo "==============================="
 echo "`date`"
 
@@ -79,7 +82,7 @@ function getNamePart {
 joplin use Import
 
 echo "Start fetching mails"
-getmail_fetch -v -s -p 995 pop.gmail.com manolitos.joplin.inbox@gmail.com "r/E22f7;4unxsmFc" ~/joplin-mailbox/
+getmail_fetch -v -s -p 995 pop.gmail.com "$POP3_USER" "$POP3_PW" ~/joplin-mailbox/
 
 find "/home/manolito/joplin-mailbox/new" -type f -print0 | sort -z | while read -d $'\0' M
 do
