@@ -9,18 +9,17 @@ readonly TEMPFOLDER=`mktemp -d`
 echo "Using temporary folder: $TEMPFOLDER"
 
 function setCreationDate {
-	if [ "$2" != "" ]; then
+	if [[ "$2" != "" ]]; then
 		local DATINT=`date -jf "%Y-%m-%d %H.%M.%S" "$2" +%s`
-		echo "Set creation date $DAT (${DATINT}000)"
+   		echo "Set creation date $2 (${DATINT}000)"
 		joplin set "$1" user_created_time ${DATINT}000
 	fi
 } 
 
 function addTags {
-	for T in $2
-	do
+	for T in $2; do
 		echo "Add tag '$T'"
-		joplin tag add $T "$1"
+		joplin tag add ${T} "$1"
 	done
 } 
 
@@ -87,7 +86,7 @@ do
 
   echo "processing $M"
 
-  SUBJECT=`cat $M | grep "Subject:" | cut -c 10-999`
+  SUBJECT=`cat ${M} | grep "Subject:" | cut -c 10-999`
   echo "Subject: $SUBJECT"
 
   NOTE=`basename "$M"`
@@ -97,40 +96,40 @@ do
   TD=`mktemp -d`
   echo "using temp dir: $TD"
 
-  ~/bin/ripmime -i $M --mailbox -d $TD
+  ~/bin/ripmime -i ${M} --mailbox -d ${TD}
 
-  touch $TD/textfile-all
+  touch ${TD}/textfile-all
   find "$TD" -type f -print0 | sort -z | while read -d $'\0' F
   do
     if [[ "$F" =~ ^.*\/textfile[0-9]*$ ]] ; then
       echo "text $F"
-      cat $F >> $TD/textfile-all
+      cat ${F} >> ${TD}/textfile-all
       rm "$F"
     fi
   done
-  BODY=`cat $TD/textfile-all`
+  BODY=`cat ${TD}/textfile-all`
   joplin set "$NOTE" body "$BODY" 
-  rm $TD/textfile-all
+  rm ${TD}/textfile-all
 
   find "$TD" -type f -print0 | sort -z | while read -d $'\0' F
   do
     echo "file $F"
     EXT=`getNamePart "$F" "2"`
     echo "Extension: $EXT"
-                                if [ "$EXT" == "txt" ] || [ "$EXT" == "md" ]; then
-					addMarkdownText "$NOTE" "$F"
-				elif [ "$EXT" == "pdf" ]; then
-					addPdfThumbnails "$NOTE" "$F"
-					attachFile "$NOTE" "$F"
-					addPdfText "$NOTE" "$F"
-				elif [ "$EXT" == "png" ] || [ "$EXT" == "jpg" ] || [ "$EXT" == "gif" ] ; then
-					attachFile "$NOTE" "$F"
-					addLastImageAsLink "$NOTE"
-					addImageText "$NOTE" "$F"
-				else
-					echo "WARNING: unsupported generic file type $EXT"
-					attachFile "$NOTE" "$F"
-				fi
+    if [[ "$EXT" == "txt" ]] || [[ "$EXT" == "md" ]]; then
+        addMarkdownText "$NOTE" "$F"
+    elif [[ "$EXT" == "pdf" ]]; then
+        addPdfThumbnails "$NOTE" "$F"
+        attachFile "$NOTE" "$F"
+        addPdfText "$NOTE" "$F"
+    elif [[ "$EXT" == "png" ]] || [[ "$EXT" == "jpg" ]] || [[ "$EXT" == "gif" ]] ; then
+        attachFile "$NOTE" "$F"
+        addLastImageAsLink "$NOTE"
+        addImageText "$NOTE" "$F"
+    else
+        echo "WARNING: unsupported generic file type $EXT"
+        attachFile "$NOTE" "$F"
+    fi
     rm "$F"
   done
 
@@ -138,7 +137,7 @@ do
 
   joplin set "$NOTE" title "$SUBJECT"
 
-  rmdir $TD
+  rmdir ${TD}
 
   mv "$M" "/home/manolito/joplin-mailbox/cur/$NOTE:2"
 
@@ -147,7 +146,7 @@ done
 echo "--------------------------"
 echo "Finished"
 
-rmdir $TEMPFOLDER
+rmdir ${TEMPFOLDER}
 
 joplin sync
 
