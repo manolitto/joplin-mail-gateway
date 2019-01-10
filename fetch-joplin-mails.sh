@@ -1,10 +1,16 @@
 #!/bin/bash
 
+# ---- Configuration ----
+readonly DEFAULT_SUBJECT="Neue Notiz"
+
+
+# ----
 readonly POP3_USER=$1
 readonly POP3_PW=$2
 
+
 echo "==============================="
-echo "`date`"
+echo "Start at `date`"
 
 readonly RXS="(.*)\.([[:alnum:]]{1,4})"
 
@@ -138,6 +144,9 @@ do
 
 #  joplin cat -v "$NOTE"
 
+  if [[ "${SUBJECT}x" == "x" ]] ; then
+    SUBJECT=${DEFAULT_SUBJECT}
+  fi
   joplin set "$NOTE" title "$SUBJECT"
 
   rmdir ${TD}
@@ -146,10 +155,9 @@ do
 
 done
 
-echo "--------------------------"
-echo "Finished"
-
 rmdir ${TEMPFOLDER}
 
 joplin sync
 
+echo "Finished at `date`"
+echo "--------------------------"
