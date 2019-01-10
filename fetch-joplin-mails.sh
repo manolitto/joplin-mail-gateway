@@ -1,16 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # ---- Configuration ----
 readonly DEFAULT_SUBJECT="Neue Notiz"
-
+readonly RIPMIME_BIN=~/bin/ripmime
 
 # ----
 readonly POP3_USER=$1
 readonly POP3_PW=$2
 
+# include functions
+. $(dirname "$0")/_mail-functions.sh
+. $(dirname "$0")/_joplin-functions.sh
 
 echo "==============================="
-echo "Start at `date`"
+echo "Start: `date`"
 
 readonly RXS="(.*)\.([[:alnum:]]{1,4})"
 
@@ -52,13 +55,6 @@ function addPdfThumbnails {
 		joplin attach "$1" "$PNG"
 		rm "$PNG"
 	done
-}  
-
-function addImageText {
-	echo "Add image text body"
-	local ORIGBODY=`joplin cat "$1"`
-	local TXT=`tesseract -l deu+eng "$2" -`
-	joplin set "$1" body "`echo -e "${ORIGBODY}\n\n---\n${TXT}"`"
 }  
 
 function addLastImageAsLink {
@@ -105,7 +101,7 @@ do
   TD=`mktemp -d`
   echo "using temp dir: $TD"
 
-  ~/bin/ripmime -i ${M} --mailbox -d ${TD}
+  ${RIPMIME_BIN} -i ${M} --mailbox -d ${TD}
 
   touch ${TD}/textfile-all
   find "$TD" -type f -print0 | sort -z | while read -d $'\0' F
@@ -159,5 +155,4 @@ rmdir ${TEMPFOLDER}
 
 joplin sync
 
-echo "Finished at `date`"
-echo "--------------------------"
+echo "End: `date`"

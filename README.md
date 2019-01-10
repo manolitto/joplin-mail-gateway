@@ -39,6 +39,11 @@ Simple (bash-based) mail gateway for the open source note taking and to-do appli
     
     - getmail_fetch: version 4.48.0
 
+6. **ripmime** must be installed
+
+    see https://github.com/inflex/ripMIME
+
+
 ## Install
 
 1. Clone from github
