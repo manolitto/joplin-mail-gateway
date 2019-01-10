@@ -26,6 +26,8 @@ do
     mv "$M" "$MAILDIR/`basename "$M"`:2"
 done
 
+echo "-------------------"
+echo "Start Joplin Sync"
 joplin sync
 
 echo "End: `date`"
