@@ -100,6 +100,16 @@ function attachFile {
 }
 
 #---
+## Usage: attachTextFromFile note-id text-file
+#---
+function attachTextFromFile {
+	echo "Add text from `basename "$2"`"
+	local ORIG_BODY=`joplin cat "$1" | tail -n +2`
+	local TXT=`cat "$2"`
+	joplin set "$1" body "`echo -e "${ORIG_BODY}\n${TXT}"`"
+}
+
+#---
 ## Usage: addPdfThumbnails note-id pdf-file
 #---
 function addPdfThumbnails {
@@ -126,25 +136,31 @@ function addLastImageAsLink {
 }
 
 #---
+## Usage: addAttachmentFromFile note-id file
+#---
+function addAttachmentFromFile {
+    local T=`determineMailPartType "$2"`
+    if [[ "$T" == "TXT" ]]; then
+        attachTextFromFile "$1" "$2"
+    elif [[ "$T" == "PDF" ]] ; then
+        addPdfThumbnails "$1" "$2"
+        attachFile "$1" "$2"
+    elif [[ "$T" == "IMG" ]] ; then
+        attachFile "$1" "$2"
+        addLastImageAsLink "$1"
+    elif [[ "$T" == "UNKNOWN" ]] ; then
+        attachFile "$1" "$2"
+    else
+        :
+    fi
+}
+
+#---
 ## Usage: addAttachmentsFromFileParts note-id mail-parts-dir
 #---
 function addAttachmentsFromFileParts {
     find "$2" -type f -print0 | sort -z | while read -d $'\0' F; do
-        local T=`determineMailPartType "${F}"`
-        #echo "Handle attachment $F of type $T"
-        if [[ "$T" == "TXT" ]]; then
-            attachFile "$1" "$F"
-        elif [[ "$T" == "PDF" ]] ; then
-            addPdfThumbnails "$1" "$F"
-            attachFile "$1" "$F"
-        elif [[ "$T" == "IMG" ]] ; then
-            attachFile "$1" "$F"
-            addLastImageAsLink "$1"
-        elif [[ "$T" == "UNKNOWN" ]] ; then
-            attachFile "$1" "$F"
-        else
-            :
-        fi
+        addAttachmentFromFile "$1" "$F"
     done
 }
 
@@ -169,18 +185,25 @@ function addImageFulltext {
 }
 
 #---
-## Usage: addAttachmentsFromFileParts note-id mail-parts-dir
+## Usage: addFulltextFromFile note-id file
+#---
+function addFulltextFromFile {
+    local T=`determineMailPartType "$2"`
+    if [[ "$T" == "PDF" ]] ; then
+        addPdfFulltext "$1" "$2"
+    elif [[ "$T" == "IMG" ]] ; then
+        addImageFulltext "$1" "$2"
+    else
+        :
+    fi
+}
+
+#---
+## Usage: addFulltextFromFileParts note-id mail-parts-dir
 #---
 function addFulltextFromFileParts {
     find "$2" -type f -print0 | sort -z | while read -d $'\0' F; do
-        local T=`determineMailPartType "${F}"`
-        if [[ "$T" == "PDF" ]] ; then
-            addPdfFulltext "$1" "$F"
-        elif [[ "$T" == "IMG" ]] ; then
-            addImageFulltext "$1" "$F"
-        else
-            :
-        fi
+        addFulltextFromFile "$1" "$F"
     done
 }
 
@@ -226,5 +249,62 @@ function addNewNoteFromMailFile {
 
     echo "Removing temp dir: $TEMP_DIR"
     rm -r ${TEMP_DIR}
+
+}
+
+
+## Usage: getCreationDateFromFilename filename
+function getCreationDateFromFilename {
+    echo -n "$1" | python3 -c 'import sys,re; s=sys.stdin.read(); s=re.search("^(\d\d\d\d-\d\d-\d\d)(?:\s(\d\d.\d\d.\d\d)\s)?",s); print() if (s is None) else print(s.group(1)+" 00.00.00") if (s.group(2) is None) else print(s.group(1)+" "+s.group(2));'
+}
+
+## Usage: getTitleFromFilename filename
+function getTitleFromFilename {
+    echo -n "$1" | python3 -c 'import sys,re; s=sys.stdin.read(); s=re.search("^(?:\d\d\d\d-\d\d-\d\d(?:\s\d\d.\d\d.\d\d)?\s?-?\s?)?(.+?)(?:\[\s*\w+(?:\s+\w+)*\s*\])?(?:\.\w+)*?$",s); print(s.group(1)) if s else print();'
+}
+
+## Usage: getNotebookFromFilename filename default-notebook
+function getNotebookFromFilename {
+    # todo
+    echo "$2"
+}
+
+## Usage: getTagsFromFilename filename
+function getTagsFromFilename {
+    echo -n "$1" | python3 -c 'import sys,re; s=sys.stdin.read(); s=re.search("^.*\[\s*(\w+(?:\s+\w+)*)\s*\](?:\.\w+)*?$",s); print(s.group(1)) if s else print();'
+}
+
+
+
+
+## Usage: addNewNoteFromGenericFile notebook file
+function addNewNoteFromGenericFile {
+
+    local FILE="$2"
+    local FILE_NAME=`basename "$FILE"`
+
+    if [[ "$FILE_NAME" =~ ^\..*$ ]] ; then
+        echo "Ignore hidden file $FILE_NAME"
+        return 1
+    fi
+
+    local TITLE=`getTitleFromFilename "$FILE_NAME"`
+    local TAGS=`getTagsFromFilename "$FILE_NAME"`
+    local NOTEBOOK="$1"
+    if [[ "${NOTEBOOK}x" == "x" ]]; then
+        NOTEBOOK="$DEFAULT_NOTEBOOK"
+    fi
+    local CREATION_DATE=`getCreationDateFromFilename "$FILE_NAME"`
+
+    echo "Create new note with name '${FILE_NAME}' in '${NOTEBOOK}'"
+    local NOTE_ID=`createNewNote ${NOTEBOOK} ${FILE_NAME}`
+    echo "New note created - ID is: $NOTE_ID"
+
+    setNoteTitle "$NOTE_ID" "$TITLE"
+    setNoteTags "$NOTE_ID" "$TAGS"
+    setCreationDate "$NOTE_ID" "$CREATION_DATE"
+
+    addAttachmentFromFile "$NOTE_ID" "$FILE"
+    addFulltextFromFile "$NOTE_ID" "$FILE"
 
 }

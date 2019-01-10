@@ -18,7 +18,7 @@ that it is easily searchable in Joplin.
 - automatically fetch mails from a certain mail account and add all new mails as Joplin notes
 - automatically add mail attachments
 - provide tags via mail subject (with #-syntax)
-- chose notebook via mail subject (with @-syntax)
+- choose notebook via mail subject (with @-syntax)
 - automatically run OCR on images and add text to bottom of note
 - automatically add PDF text part to bottom of note
 
