@@ -3,6 +3,16 @@
 Simple (bash-based) mail gateway for the open source note taking and to-do application
 [Joplin](https://joplin.cozic.net/).
 
+## Rationale
+
+This tool provides a solution for emailing content directly into your Joplin notes.
+
+You may send or forward an email to a dedicated email address. This email is than
+automatically delivered to your personal Joplin notes. Attachments (PDFs, Images, ...)
+will automatically be included in the note. In addition text is automatically
+scanned from images via OCR. This extracted text is added at the bottom of the note so
+that it is easily searchable in Joplin. 
+
 ## Features
 
 - automatically fetch mails from a certain mail account and add all new mails as Joplin notes
@@ -67,9 +77,9 @@ Simple (bash-based) mail gateway for the open source note taking and to-do appli
         
 2. Create a mail directory for incoming mails with following structure:
 
-        ~/joplin-mailbox//new
-        ~/joplin-mailbox//cur
-        ~/joplin-mailbox//tmp
+        mkdir -p ~/joplin-mailbox/new
+        mkdir -p ~/joplin-mailbox/cur
+        mkdir -p ~/joplin-mailbox/tmp
 
 3. Create a log directory
 
