@@ -1,6 +1,7 @@
 # joplin-mail-gateway
 
-Simple (bash-based) mail gateway for the open source note taking and to-do application Joplin.
+Simple (bash-based) mail gateway for the open source note taking and to-do application
+[Joplin](https://joplin.cozic.net/).
 
 ## Features
 
@@ -13,11 +14,11 @@ Simple (bash-based) mail gateway for the open source note taking and to-do appli
 
 ## Prerequisites
 
-1. Joplin (Terminal application) installed and configured
+1. [**Joplin**](https://joplin.cozic.net/) terminal application installed and configured
 
     see https://joplin.cozic.net/
 
-2. **pdftoppm** and **pdftotext** must be installed
+2. [**pdftoppm**](https://poppler.freedesktop.org/) and [**pdftotext**](https://poppler.freedesktop.org/) must be installed
 
         sudo apt update
         sudo apt install poppler-utils
@@ -27,7 +28,7 @@ Simple (bash-based) mail gateway for the open source note taking and to-do appli
     - pdftoppm: version 3.03    
     - pdftotext: version 3.03    
 
-4. **tesseract** must be installed
+4. [**tesseract**](https://github.com/tesseract-ocr/tesseract) must be installed
 
         sudo apt-get install tesseract-ocr
         
@@ -39,7 +40,7 @@ Simple (bash-based) mail gateway for the open source note taking and to-do appli
     
     - tesseract: version 3.04.01
 
-5. **getmail** must be installed 
+5. [**getmail**](http://pyropus.ca/software/getmail/) must be installed 
 
         sudo apt-get update
         sudo apt-get install getmail4
@@ -48,10 +49,23 @@ Simple (bash-based) mail gateway for the open source note taking and to-do appli
     
     - getmail_fetch: version 4.48.0
 
-6. **ripmime** must be installed
+6. [**ripmime**](https://github.com/inflex/ripMIME) must be installed
 
-    see https://github.com/inflex/ripMIME
+        sudo apt-get update
+        sudo apt install ripmime
 
+    Known to work:
+    
+    - ripmime: version v1.4.0.9
+
+7. [**python 3**](https://www.python.org/) must be installed
+
+        sudo apt-get update
+        sudo apt install python3
+
+    Known to work:
+    
+    - python3: version 3.5.2
 
 ## Install
 
