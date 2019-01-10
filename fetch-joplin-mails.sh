@@ -23,7 +23,7 @@ do
     echo "-------------------"
     echo "Process $M"
     addNewNoteFromMailFile "$M"
-    mv "$M" "$MAILDIR/`basename "$M"`:2"
+    mv "$M" "$MAILDIR/cur/`basename "$M"`:2"
 done
 
 echo "-------------------"
