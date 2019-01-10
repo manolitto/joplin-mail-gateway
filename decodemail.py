@@ -31,6 +31,7 @@ Example: %s -a Subject: /var/mail/yourname
          %s -a 'Subject:|To:|From:' folder folder""" % (progname, progname,
                                                         progname)
 
+
 def decode_piece(piece):
     ret = ''
     for part in email.Header.decode_header(piece):
@@ -46,6 +47,7 @@ def decode_piece(piece):
             ret += ' '
 
     return ret
+
 
 def decode_and_split(piece, header_wanted):
     thispiece = decode_piece(piece)
@@ -70,12 +72,15 @@ def decode_and_split(piece, header_wanted):
 
     return thispiece
 
+
 def decode_file(filename, header_wanted, all=False, casematch=False):
     if filename == '-':
         fil = sys.stdin
     else:
         fil = open(filename)
-    print("All?", all)
+
+    if Debug:
+        print("All?", all)
 
     if not casematch:
         header_wanted = header_wanted.lower()
@@ -134,6 +139,7 @@ def decode_file(filename, header_wanted, all=False, casematch=False):
     if not found_something:
         print("No such header", header_wanted, "in", filename)
         return
+
 
 if sys.argv[1] == '-h' or sys.argv[1] == '--help':
     print(Usage)
