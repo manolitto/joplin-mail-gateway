@@ -26,6 +26,6 @@ do
     mv "$M" "$MAILDIR/`basename "$M"`:2"
 done
 
-#joplin sync
+joplin sync
 
 echo "End: `date`"
