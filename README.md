@@ -18,54 +18,46 @@ Simple (bash-based) mail gateway for the open source note taking and to-do appli
 
     see https://joplin.cozic.net/
 
+    Tested with `joplin 1.0.119 (prod)`
+
 2. [**pdftoppm**](https://poppler.freedesktop.org/) and [**pdftotext**](https://poppler.freedesktop.org/) must be installed
 
         sudo apt update
         sudo apt install poppler-utils
 
-    Known to work:
-
-    - pdftoppm: version 3.03    
-    - pdftotext: version 3.03    
+    Tested with `pdftoppm 3.03` and `pdftotext 3.03`    
 
 4. [**tesseract**](https://github.com/tesseract-ocr/tesseract) must be installed
 
+        sudo apt update
         sudo apt-get install tesseract-ocr
         
     And for German training files:
      
         sudo apt-get install tesseract-ocr-deu 
 
-    Known to work:
-    
-    - tesseract: version 3.04.01
+    Tested with `tesseract 3.04.01`
 
 5. [**getmail**](http://pyropus.ca/software/getmail/) must be installed 
 
         sudo apt-get update
         sudo apt-get install getmail4
 
-    Known to work:
-    
-    - getmail_fetch: version 4.48.0
+    Tested with `getmail_fetch 4.48.0`
 
 6. [**ripmime**](https://github.com/inflex/ripMIME) must be installed
 
         sudo apt-get update
         sudo apt install ripmime
 
-    Known to work:
-    
-    - ripmime: version v1.4.0.9
+    Tested with `ripmime v1.4.0.9`
 
 7. [**python 3**](https://www.python.org/) must be installed
 
         sudo apt-get update
         sudo apt install python3
 
-    Known to work:
-    
-    - python3: version 3.5.2
+    Tested with `python3 3.5.2`
 
 ## Install
 
