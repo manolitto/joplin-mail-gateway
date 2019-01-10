@@ -1,6 +1,6 @@
 # joplin-mail-gateway
 
-Simple (bash-based) mail gateway for the open source note taking and to-do application Joplin
+Simple (bash-based) mail gateway for the open source note taking and to-do application Joplin.
 
 ## Features
 
@@ -72,7 +72,13 @@ Simple (bash-based) mail gateway for the open source note taking and to-do appli
         
 4. Create a new mail account at your preferred email provider that supports POP3
         
-5. Add cron job
+5. Change default configuration (if necessary) - see below
+   
+6. Test your configuration   
+        
+        ./fetch-joplin-mails.sh "POP3_USER" "POP3_PW" 
+        
+7. Add cron job
 
         crontab -e
 
