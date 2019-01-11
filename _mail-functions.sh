@@ -2,9 +2,6 @@
 
 readonly DECODEMAIL_BIN=$(dirname "$0")/decodemail.py
 
-readonly POP3_HOST="pop.gmail.com"
-readonly POP3_PORT=995
-
 ## Usage: getMailSubject mail-file
 function getMailSubject {
     ${DECODEMAIL_BIN} Subject: $1 | cut -c 10-999

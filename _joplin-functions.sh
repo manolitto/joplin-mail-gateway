@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-#. ./_mail-functions.sh
-
-readonly DEFAULT_TITLE_PREFIX="Neue Notiz"
-readonly DEFAULT_NOTEBOOK="Import"
-readonly RIPMIME_BIN=ripmime
-
 #---
 ## Create a new Joplin note
 ## Usage: createNewNote notebook unique-name
@@ -44,7 +38,7 @@ function setNoteTags {
 ## Usage: extractMailParts mail-file dest-dir
 #---
 function extractMailParts {
-    ${RIPMIME_BIN} -i ${1} --mailbox -d ${2}
+    ripmime -i ${1} --mailbox -d ${2}
 }
 
 #---

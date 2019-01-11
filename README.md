@@ -88,19 +88,30 @@ that it is easily searchable in Joplin.
         
 4. Create a new mail account at your preferred email provider that supports POP3
         
-5. Change default configuration (if necessary) - see below
-   
-6. Test your configuration   
+5. Create the configuration file
         
-        ./fetch-joplin-mails.sh "POP3_USER" "POP3_PW" 
+        cp config-sample.sh config.sh
         
-7. Add cron job
+5. Change default configuration by editing `config.sh`
+
+        readonly POP3_USER="your-email-user@your-provider"
+        readonly POP3_PW="your-super-secret-pop3-pw"
+        readonly POP3_HOST="pop.gmail.com"
+        readonly POP3_PORT=995
+        readonly DEFAULT_TITLE_PREFIX="Neue Notiz"
+        readonly DEFAULT_NOTEBOOK="Import"
+
+7. Test your configuration
+        
+        ./fetch-joplin-mails.sh  
+        
+8. Add cron job
 
         crontab -e
 
-    Add the following line (replace POP3_USER and POP3_PW accordingly):
+    Add the following line:
 
-        */5 * * * * ~/joplin-mail-gateway/fetch-joplin-mails.sh "POP3_USER" "POP3_PW" >>/var/log/fetch-joplin-mails/fetch.log 2>&1           
+        */5 * * * * ~/joplin-mail-gateway/fetch-joplin-mails.sh >>/var/log/fetch-joplin-mails/fetch.log 2>&1           
 
 ## Configuration
 

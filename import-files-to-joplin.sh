@@ -8,6 +8,7 @@ fi
 # include functions
 readonly CURR_WD=`pwd`
 cd "$(dirname "$0")";
+. ./config.sh
 . ./_util-functions.sh
 . ./_mail-functions.sh
 . ./_joplin-functions.sh
