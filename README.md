@@ -20,6 +20,7 @@ that it is easily searchable in Joplin.
 - provide tags via mail subject (with #-syntax)
 - choose notebook via mail subject (with @-syntax)
 - automatically run OCR on images and add text to bottom of note
+- automatically add png thumbnails for PDF attachments
 - automatically add PDF text part to bottom of note
 
 ## Prerequisites
