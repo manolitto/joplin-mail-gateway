@@ -91,6 +91,7 @@ that it is easily searchable in Joplin.
 5. Create the configuration file
         
         cp config-sample.sh config.sh
+        chmod 700 config.sh 
         
 5. Change default configuration by editing `config.sh`
 
@@ -113,20 +114,3 @@ that it is easily searchable in Joplin.
 
         */5 * * * * ~/joplin-mail-gateway/fetch-joplin-mails.sh >>/var/log/fetch-joplin-mails/fetch.log 2>&1           
 
-## Configuration
-
-#### Mail provider
-
-    _mail-functions.sh:
-        readonly POP3_HOST="pop.gmail.com"
-        readonly POP3_PORT=995
-
-#### Default title (in case of empty mail subject)
-
-    _joplin-functions.sh:
-        readonly DEFAULT_TITLE_PREFIX="Neue Notiz"
-
-#### Default notebook (in case no notebook is given in mail subject)
-        
-    _joplin-functions.sh:
-        readonly DEFAULT_NOTEBOOK="Import"
