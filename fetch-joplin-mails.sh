@@ -6,6 +6,7 @@ readonly MAILDIR=~/joplin-mailbox/
 # include functions
 readonly CURR_WD=`pwd`
 cd "$(dirname "$0")";
+. ./config-defaults.sh
 . ./config.sh
 . ./_util-functions.sh
 . ./_mail-functions.sh

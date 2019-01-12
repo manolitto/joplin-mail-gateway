@@ -33,5 +33,5 @@ function getNotebookFromSubject {
 #---
 function fetchMails {
     echo "Fetching mails"
-    getmail_fetch -v -s -p ${POP3_PORT} ${POP3_HOST} "$1" "$2" "$3"
+    getmail_fetch -v -s -p ${GETMAIL_OPTS} ${POP3_PORT} ${POP3_HOST} "$1" "$2" "$3"
 }
