@@ -20,8 +20,8 @@ NEW_MAIL=0
 
 fetchMails "$POP3_USER" "$POP3_PW" "$MAILDIR"
 
-find "$MAILDIR/new" -type f -print0 | sort -z | while read -d $'\0' M
-do
+NEW_MAIL_FILES=`find "$MAILDIR/new" -type f -print0 | sort -z`
+while read -d $'\0' M; do
     echo "-------------------"
     echo "Process $M"
     let NEW_MAIL=1
@@ -31,9 +31,9 @@ do
     else
         echo "Error: Mail could not be added - leaving in inbox"
     fi
-done
+done <<< "$NEW_MAIL_FILES"
 
-if [[ ${NEW_MAIL} == 1 ]] ; then
+if [[ ${NEW_MAIL} -eq 1 ]] ; then
     echo "-------------------"
     echo "Start Joplin Sync"
     joplin sync
