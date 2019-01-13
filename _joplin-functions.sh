@@ -55,6 +55,8 @@ function determineMailPartType {
         echo "PDF"
     elif [[ "$1" =~ ^.*\.jpg$ ]] ; then
         echo "IMG"
+    elif [[ "$1" =~ ^.*\.jpeg$ ]] ; then
+        echo "IMG"
     elif [[ "$1" =~ ^.*\.png$ ]] ; then
         echo "IMG"
     elif [[ "$1" =~ ^.*\.gif$ ]] ; then
