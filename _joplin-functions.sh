@@ -7,6 +7,21 @@
 #---
 function createNewNote {
     joplin use "$1"
+    if [[ $? -ne 0 ]] ; then
+        if [[ "$AUTO_CREATE_NOTEBOOK" == "true" ]]; then
+            echo "Info: notebook $1 not found - creating automatically"
+            joplin mkbook "$1"
+            joplin use "$1"
+        else
+            echo "Warning: notebook $1 not found - using default $DEFAULT_NOTEBOOK instead"
+            joplin use "$DEFAULT_NOTEBOOK"
+            if [[ $? -ne 0 ]] ; then
+                echo "Error: default notebook $DEFAULT_NOTEBOOK not found - creating automatically"
+                joplin mkbook "$DEFAULT_NOTEBOOK"
+                joplin use "$DEFAULT_NOTEBOOK"
+            fi
+        fi
+    fi
     joplin mknote "$2"
     local LS_OUTPUT=(`joplin ls -l "$2"`)
     echo ${LS_OUTPUT[0]}
