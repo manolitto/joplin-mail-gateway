@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
 #---
-## Create a new Joplin note
-## Usage: createNewNote notebook unique-name
-## @return the note id
+## Switch to given Joplin notebook
+## Usage: switchToNotebook notebook
 #---
-function createNewNote {
+function switchToNotebook {
     joplin use "$1"
     if [[ $? -ne 0 ]] ; then
         if [[ "$AUTO_CREATE_NOTEBOOK" == "true" ]]; then
@@ -22,8 +21,16 @@ function createNewNote {
             fi
         fi
     fi
-    joplin mknote "$2"
-    local LS_OUTPUT=(`joplin ls -l "$2"`)
+}
+
+#---
+## Create a new Joplin note
+## Usage: createNewNote unique-name
+## @return the note id
+#---
+function createNewNote {
+    joplin mknote "$1"
+    local LS_OUTPUT=(`joplin ls -l "$1"`)
     echo ${LS_OUTPUT[0]}
 }
 
@@ -243,8 +250,9 @@ function addNewNoteFromMailFile {
     local TAGS=`getTagsFromSubject "$SUBJECT"`
     local NOTEBOOK=`getNotebookFromSubject "$SUBJECT" "$DEFAULT_NOTEBOOK"`
 
+    switchToNotebook "${NOTEBOOK}"
     echo "Create new note with name '${NOTE_NAME}' in '${NOTEBOOK}'"
-    local NOTE_ID=`createNewNote ${NOTEBOOK} ${NOTE_NAME}`
+    local NOTE_ID=`createNewNote "${NOTE_NAME}"`
     echo "New note created - ID is: $NOTE_ID"
 
     setNoteTitle "$NOTE_ID" "$TITLE"
@@ -307,8 +315,9 @@ function addNewNoteFromGenericFile {
     fi
     local CREATION_DATE=`getCreationDateFromFilename "$FILE_NAME"`
 
+    switchToNotebook "${NOTEBOOK}"
     echo "Create new note with name '${FILE_NAME}' in '${NOTEBOOK}'"
-    local NOTE_ID=`createNewNote ${NOTEBOOK} ${FILE_NAME}`
+    local NOTE_ID=`createNewNote "${FILE_NAME}"`
     echo "New note created - ID is: $NOTE_ID"
 
     setNoteTitle "$NOTE_ID" "$TITLE"
