@@ -16,19 +16,24 @@ cd ${CURR_WD}
 echo "==============================="
 echo "Start: `date`"
 
-NEW_MAIL=false
+NEW_MAIL=0
+
 fetchMails "$POP3_USER" "$POP3_PW" "$MAILDIR"
 
 find "$MAILDIR/new" -type f -print0 | sort -z | while read -d $'\0' M
 do
     echo "-------------------"
     echo "Process $M"
-    export NEW_MAIL=true
+    let NEW_MAIL=1
     addNewNoteFromMailFile "$M"
-    mv "$M" "$MAILDIR/cur/`basename "$M"`:2"
+    if [[ $? -eq 0 ]]; then
+        mv "$M" "$MAILDIR/cur/`basename "$M"`:2"
+    else
+        echo "Error: Mail could not be added - leaving in inbox"
+    fi
 done
 
-if [[ "$NEW_MAIL" == "true" ]] ; then
+if [[ ${NEW_MAIL} == 1 ]] ; then
     echo "-------------------"
     echo "Start Joplin Sync"
     joplin sync
