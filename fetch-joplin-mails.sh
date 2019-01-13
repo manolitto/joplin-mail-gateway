@@ -23,7 +23,7 @@ find "$MAILDIR/new" -type f -print0 | sort -z | while read -d $'\0' M
 do
     echo "-------------------"
     echo "Process $M"
-    NEW_MAIL=true
+    export NEW_MAIL=true
     addNewNoteFromMailFile "$M"
     mv "$M" "$MAILDIR/cur/`basename "$M"`:2"
 done
