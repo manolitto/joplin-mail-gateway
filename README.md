@@ -115,3 +115,21 @@ that it is easily searchable in Joplin.
 
         */5 * * * * ~/joplin-mail-gateway/fetch-joplin-mails.sh >>/var/log/fetch-joplin-mails/fetch.log 2>&1           
 
+## Running from a docker container
+
+The gateway can be run from a docker container. The included Dockerfile does everything from installing joplin to 
+fetching emails
+
+To setup the docker container :
+
+1. prepare the mail-gateway by editing the `config.sh` file as described above
+
+2. edit the `joplin-config.json` file with your Joplin sync settings. Template files are availables. Simple remove the `.template` extension
+
+3. build the container by running
+
+        docker build . -t joplin_gateway
+
+4. run the container
+
+        docker run -d joplin_gateway
