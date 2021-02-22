@@ -12,7 +12,7 @@ POP3_PORT=995
 # However, as soon as your setup is tested and working you may add the --delete flag to the getmail options.
 # Alternative: if your email provider allows it (Gmail does) you may also set your inbox options to
 # "archive mails when POP3 fetched".
-#GETMAIL_OPTS=--ssl --delete
+#GETMAIL_OPTS="--ssl --delete"
 
 #DEFAULT_TITLE_PREFIX="Neue Notiz"
 #DEFAULT_NOTEBOOK="Import"

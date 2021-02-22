@@ -68,7 +68,13 @@ that it is easily searchable in Joplin.
         sudo apt-get update
         sudo apt install python3
 
-    Tested with `python3 3.5.2`
+    Tested with `python3 3.5.2`.
+    
+    Note: If you are running Ubuntu 20.04.1 LTS, make sure to set Python3 
+    as the default interpreter:
+
+        sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10                    
+     
 
 ## Install
 
